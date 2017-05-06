@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.bigmak712.simpletodo.AddItemActivity">
+
+    <TextView
+        android:id="@+id/task_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="40dp"
+        android:layout_marginStart="40dp"
+        android:text="Task"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="40dp" />
+    <EditText
+        android:id="@+id/etTask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/task_label"
+        android:layout_alignLeft="@+id/task_label"
+        android:layout_alignStart="@+id/task_label" />
+    <TextView
+        android:id="@+id/note_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Notes"
+        android:layout_below="@+id/etTask"
+        android:layout_alignLeft="@+id/etTask"
+        android:layout_alignStart="@+id/etTask" />
+    <EditText
+        android:id="@+id/etNotes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_below="@+id/note_label"
+        android:layout_alignLeft="@+id/note_label"
+        android:layout_alignStart="@+id/note_label"
+        android:ems="10"
+        android:inputType="textPersonName" />
+    <TextView
+        android:id="@+id/date_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Due Date"
+        android:layout_below="@+id/etNotes"
+        android:layout_alignLeft="@+id/etNotes"
+        android:layout_alignStart="@+id/etNotes" />
+    <EditText
+        android:id="@+id/etDueDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/date_label"
+        android:layout_alignStart="@+id/date_label"
+        android:layout_below="@+id/date_label"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:inputType="date" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/etDueDate"
+        android:layout_alignStart="@+id/etDueDate"
+        android:layout_below="@+id/etDueDate"
+        android:layout_marginTop="20dp"
+        android:onClick="onSubmit"
+        android:text="Button" />
+
+</RelativeLayout>
