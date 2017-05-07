@@ -19,8 +19,8 @@ public class MainActivity extends AppCompatActivity {
 
     private final int EDIT_CODE = 20;
     private final int SAVE_CODE = 30;
-    private final int ADD_CODE = 40;
-    private final int SUBMIT_CODE = 50;
+    //private final int ADD_CODE = 40;
+    //private final int SUBMIT_CODE = 50;
 
     ArrayList<String> items;
     ArrayAdapter<String> itemsAdapter;
@@ -29,40 +29,46 @@ public class MainActivity extends AppCompatActivity {
     //CustomTaskAdapter tasksAdapter;
 
     ListView lvItems;
-    TasksDatabaseHelper dbHelper;
+    //TasksDatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        lvItems = (ListView)findViewById(R.id.lvItems);
+        // Retrieve the items that are saved
         readItems();
 
+        // Set up the list view with the items
+        lvItems = (ListView)findViewById(R.id.lvItems);
         itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
         lvItems.setAdapter(itemsAdapter);
+        setupListViewListener();
+
+
 
         /*
-        dbHelper = TasksDatabaseHelper.getInstance(this);
-        List<Task> databaseTasks = dbHelper.getAllTasks();
+        tasksAdapter = new CustomTaskAdapter(this, tasks);
+        lvItems.setAdapter(tasksAdapter);
 
+        dbHelper = TasksDatabaseHelper.getInstance(this);
+
+        List<Task> databaseTasks = dbHelper.getAllTasks();
         for (Task t: databaseTasks) {
             tasks.add(t);
         }
-
-        tasksAdapter = new CustomTaskAdapter(this, tasks);
-        lvItems.setAdapter(tasksAdapter);
         */
 
-        lvItems.setAdapter(itemsAdapter);
-        setupListViewListener();
     }
 
     // Adds input item to the list
     public void onAddItem(View view) {
 
+        // Get the text from the edit text
         EditText etNewItem = (EditText)findViewById(R.id.etNewItem);
         String itemText = etNewItem.getText().toString();
+
+        // Add the new task and set the edit text to blank
         itemsAdapter.add(itemText);
         etNewItem.setText("");
 
@@ -84,12 +90,10 @@ public class MainActivity extends AppCompatActivity {
             public boolean onItemLongClick(AdapterView<?> adapter, View item, int pos, long id) {
 
                 // Removes the item
-
                 items.remove(pos);
                 //tasks.remove(pos);
 
                 // Refreshes the adapter
-
                 itemsAdapter.notifyDataSetChanged();
                 //tasksAdapter.notifyDataSetChanged();
 
@@ -115,6 +119,16 @@ public class MainActivity extends AppCompatActivity {
         File filesDir = getFilesDir();
         File todoFile = new File(filesDir, "todo.txt");
         try {
+            /*
+            Scanner reader = new Scanner(todoFile);
+            while(reader.hasNext()) {
+                String title = reader.next();
+                String notes = reader.next();
+                String date = reader.next();
+                tasks.add(new Task(title, notes, date));
+            }
+            */
+
             items = new ArrayList<String>(FileUtils.readLines(todoFile));
             //tasks = new ArrayList<Task>(FileUtils.readLines(todoFile));
         } catch (IOException e){

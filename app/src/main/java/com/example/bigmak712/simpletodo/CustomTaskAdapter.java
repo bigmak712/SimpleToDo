@@ -35,9 +35,9 @@ public class CustomTaskAdapter extends ArrayAdapter<Task>{
         TextView date = (TextView) convertView.findViewById(R.id.task_date);
 
         // Populate the data into the template view
-        title.setText(task.title);
-        notes.setText(task.notes);
-        date.setText(task.date);
+        title.setText(task.getTitle());
+        notes.setText(task.getNotes());
+        date.setText(task.getDate());
 
         // Return the completed view
         return convertView;
