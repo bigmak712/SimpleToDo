@@ -9,6 +9,12 @@ public class Task {
     public String notes;
     public String date;
 
+    public Task() {
+        this.title = "";
+        this.notes = "";
+        this.date = "";
+    }
+
     public Task(String title, String notes, String date) {
         this.title = title;
         this.notes = notes;

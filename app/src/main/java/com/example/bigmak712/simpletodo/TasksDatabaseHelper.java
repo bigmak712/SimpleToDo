@@ -1,8 +1,13 @@
 package com.example.bigmak712.simpletodo;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by bigmak712 on 5/6/17.
@@ -71,6 +76,76 @@ public class TasksDatabaseHelper extends SQLiteOpenHelper{
     }
 
 
+    public void addTask(Task task) {
+        SQLiteDatabase db = getWritableDatabase();
 
+        db.beginTransaction();
+        try {
+            ContentValues values = new ContentValues();
+            values.put(KEY_TASK_TITLE, task.title);
+            values.put(KEY_TASK_NOTES, task.notes);
+            values.put(KEY_TASK_DUE_DATE, task.date);
+
+            db.insertOrThrow(TABLE_TASKS, null, values);
+            db.setTransactionSuccessful();
+        } catch (Exception e){
+            System.err.println("Error while trying to add a task");
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    public List<Task> getAllTasks() {
+        List<Task> tasks = new ArrayList<>();
+
+        String TASKS_SELECT_QUERY = String.format("SELECT * FROM %s", TABLE_TASKS);
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(TASKS_SELECT_QUERY, null);
+        try {
+            if(cursor.moveToFirst()) {
+                do {
+                    Task newTask = new Task();
+                    newTask.setTitle(cursor.getString(cursor.getColumnIndex(KEY_TASK_TITLE)));
+                    newTask.setNotes(cursor.getString(cursor.getColumnIndex(KEY_TASK_NOTES)));
+                    newTask.setDate(cursor.getString(cursor.getColumnIndex(KEY_TASK_DUE_DATE)));
+
+                    tasks.add(newTask);
+
+                } while(cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            System.err.println("Error while trying to get tasks from database");
+        } finally {
+            if(cursor != null && !cursor.isClosed()) {
+                cursor.close();
+            }
+        }
+        return tasks;
+    }
+
+    public int updateTask(Task task) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(KEY_TASK_TITLE, task.getTitle());
+        values.put(KEY_TASK_NOTES, task.getNotes());
+        values.put(KEY_TASK_DUE_DATE, task.getDate());
+
+        return db.update(TABLE_TASKS, values, KEY_TASK_TITLE,
+                new String[]{String.valueOf(task.getTitle())});
+    }
+
+    public void deleteAllTasks() {
+        SQLiteDatabase db = getWritableDatabase();
+        db.beginTransaction();
+        try {
+            db.delete(TABLE_TASKS, null, null);
+            db.setTransactionSuccessful();
+        } catch (Exception e) {
+            System.err.println("Error while trying to delete all tasks");
+        } finally {
+            db.endTransaction();
+        }
+    }
 
 }

@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import org.apache.commons.io.FileUtils;
@@ -24,10 +25,11 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> items;
     ArrayAdapter<String> itemsAdapter;
 
-    ArrayList<Task> tasks;
-    CustomTaskAdapter tasksAdapter;
+    //ArrayList<Task> tasks;
+    //CustomTaskAdapter tasksAdapter;
 
     ListView lvItems;
+    TasksDatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,30 +39,38 @@ public class MainActivity extends AppCompatActivity {
         lvItems = (ListView)findViewById(R.id.lvItems);
         readItems();
 
-        /*
         itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
         lvItems.setAdapter(itemsAdapter);
-        */
+
+        /*
+        dbHelper = TasksDatabaseHelper.getInstance(this);
+        List<Task> databaseTasks = dbHelper.getAllTasks();
+
+        for (Task t: databaseTasks) {
+            tasks.add(t);
+        }
 
         tasksAdapter = new CustomTaskAdapter(this, tasks);
         lvItems.setAdapter(tasksAdapter);
+        */
 
+        lvItems.setAdapter(itemsAdapter);
         setupListViewListener();
     }
 
     // Adds input item to the list
     public void onAddItem(View view) {
-        /*
+
         EditText etNewItem = (EditText)findViewById(R.id.etNewItem);
         String itemText = etNewItem.getText().toString();
         itemsAdapter.add(itemText);
         etNewItem.setText("");
 
         writeItems();
-        */
 
-        Intent i = new Intent(MainActivity.this, AddItemActivity.class);
-        startActivityForResult(i, ADD_CODE);
+
+        //Intent i = new Intent(MainActivity.this, AddItemActivity.class);
+        //startActivityForResult(i, ADD_CODE);
     }
 
     // Method for setting up listener
@@ -75,13 +85,13 @@ public class MainActivity extends AppCompatActivity {
 
                 // Removes the item
 
-                // items.remove(pos);
-                tasks.remove(pos);
+                items.remove(pos);
+                //tasks.remove(pos);
 
                 // Refreshes the adapter
 
-                // adapter.notifyDataSetChanged();
-                tasksAdapter.notifyDataSetChanged();
+                itemsAdapter.notifyDataSetChanged();
+                //tasksAdapter.notifyDataSetChanged();
 
                 writeItems();
 
@@ -93,7 +103,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> adapter, View item, int pos, long id) {
-                String itemText = tasks.get(pos).getTitle();
+                //String itemText = tasks.get(pos).getTitle();
+                String itemText = items.get(pos).toString();
                 launchEditView(itemText, pos);
             }
         });
@@ -104,11 +115,11 @@ public class MainActivity extends AppCompatActivity {
         File filesDir = getFilesDir();
         File todoFile = new File(filesDir, "todo.txt");
         try {
-            // items = new ArrayList<String>(FileUtils.readLines(todoFile));
-            tasks = new ArrayList<Task>(FileUtils.readLines(todoFile));
+            items = new ArrayList<String>(FileUtils.readLines(todoFile));
+            //tasks = new ArrayList<Task>(FileUtils.readLines(todoFile));
         } catch (IOException e){
-            // items = new ArrayList<String>();
-            tasks = new ArrayList<Task>();
+            items = new ArrayList<String>();
+            //tasks = new ArrayList<Task>();
         }
     }
 
@@ -117,8 +128,8 @@ public class MainActivity extends AppCompatActivity {
         File filesDir = getFilesDir();
         File todoFile = new File(filesDir, "todo.txt");
         try {
-            // FileUtils.writeLines(todoFile, items);
-            FileUtils.writeLines(todoFile, tasks);
+            FileUtils.writeLines(todoFile, items);
+            //FileUtils.writeLines(todoFile, tasks);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -141,18 +152,20 @@ public class MainActivity extends AppCompatActivity {
             String etTask = i.getExtras().getString("edit");
             int pos = i.getIntExtra("position", 0);
 
-            /*
+
             items.remove(pos);
             items.add(pos, etTask);
             itemsAdapter.notifyDataSetChanged();
-            */
 
+            /*
             tasks.get(pos).setTitle(etTask);
+            dbHelper.updateTask(tasks.get(pos));
             tasksAdapter.notifyDataSetChanged();
+            */
 
             writeItems();
         }
-
+        /*
         else if(requestCode == ADD_CODE && resultCode == SUBMIT_CODE) {
             String task = i.getExtras().getString("task");
             String notes = i.getExtras().getString("notes");
@@ -162,8 +175,8 @@ public class MainActivity extends AppCompatActivity {
             tasks.add(t);
 
             tasksAdapter.notifyDataSetChanged();
-            writeItems();
-        }
+            dbHelper.addTask(t);
+        }*/
         else {
             System.err.println("Error when receiving data from EditView");
         }
