@@ -5,9 +5,10 @@ package com.example.bigmak712.simpletodo;
  */
 
 public class Task {
-    public String title;
-    public String notes;
-    public String date;
+    private long id;
+    private String title;
+    private String notes;
+    private String date;
 
     public Task() {
         this.title = "";
@@ -21,6 +22,8 @@ public class Task {
         this.date = date;
     }
 
+    public long getId() { return this.id; }
+
     public String getTitle() {
         return this.title;
     }
@@ -30,6 +33,8 @@ public class Task {
     }
 
     public String getDate() { return this.date; }
+
+    public void setId(long id) { this.id = id; }
 
     public void setTitle(String title) { this.title = title; }
 

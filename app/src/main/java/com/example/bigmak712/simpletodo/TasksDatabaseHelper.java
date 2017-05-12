@@ -1,13 +1,8 @@
 package com.example.bigmak712.simpletodo;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by bigmak712 on 5/6/17.
@@ -15,6 +10,42 @@ import java.util.List;
 
 public class TasksDatabaseHelper extends SQLiteOpenHelper{
 
+    // Database Info
+    private static final String DATABASE_NAME = "tasksDatabase";
+    public static final String DATABASE_TABLE = "tasks";
+    private static final int DATABASE_VERSION = 1;
+
+    // Task Table Columns
+    public static final String KEY_TASK_ID = "_id";
+    public static final String KEY_TASK_TITLE = "title";
+    public static final String KEY_TASK_NOTES = "notes";
+    public static final String KEY_TASK_DUE_DATE = "dueDate";
+
+    public TasksDatabaseHelper(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    @Override
+    public void onCreate(SQLiteDatabase database) {
+        String CREATE_TASKS_TABLE = "CREATE TABLE " + DATABASE_TABLE +
+                "( " +
+                KEY_TASK_ID + " INTEGER PRIMARY KEY," +
+                KEY_TASK_TITLE + " TEXT," +
+                KEY_TASK_NOTES + " TEXT," +
+                KEY_TASK_DUE_DATE + " TEXT " +
+                ")";
+
+        database.execSQL(CREATE_TASKS_TABLE);
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase database, int oldVersion, int newVersion) {
+        database.execSQL("DROP TABLE IF EXISTS " + DATABASE_TABLE);
+        onCreate(database);
+    }
+
+
+    /*
     // Database Info
     private static final String DATABASE_NAME = "tasksDatabase";
     private static final int DATABASE_VERSION = 1;
@@ -147,5 +178,5 @@ public class TasksDatabaseHelper extends SQLiteOpenHelper{
             db.endTransaction();
         }
     }
-
+    */
 }

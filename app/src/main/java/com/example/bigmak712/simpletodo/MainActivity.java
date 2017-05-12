@@ -25,17 +25,20 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> items;
     ArrayAdapter<String> itemsAdapter;
 
-    //ArrayList<Task> tasks;
-    //CustomTaskAdapter tasksAdapter;
+    ArrayList<Task> tasks;
+    CustomTaskAdapter tasksAdapter;
 
     ListView lvItems;
     //TasksDatabaseHelper dbHelper;
+
+    private TaskDataSource dataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        /*
         // Retrieve the items that are saved
         readItems();
 
@@ -44,20 +47,18 @@ public class MainActivity extends AppCompatActivity {
         itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
         lvItems.setAdapter(itemsAdapter);
         setupListViewListener();
+        */
 
+        dataSource = new TaskDataSource(this);
+        dataSource.open();
 
+        tasks = new ArrayList<Task>(dataSource.getAllTasks());
 
-        /*
         tasksAdapter = new CustomTaskAdapter(this, tasks);
+        lvItems = (ListView)findViewById(R.id.lvItems);
         lvItems.setAdapter(tasksAdapter);
 
-        dbHelper = TasksDatabaseHelper.getInstance(this);
-
-        List<Task> databaseTasks = dbHelper.getAllTasks();
-        for (Task t: databaseTasks) {
-            tasks.add(t);
-        }
-        */
+        //dbHelper = TasksDatabaseHelper.getInstance(this);
 
     }
 
@@ -66,14 +67,18 @@ public class MainActivity extends AppCompatActivity {
 
         // Get the text from the edit text
         EditText etNewItem = (EditText)findViewById(R.id.etNewItem);
-        String itemText = etNewItem.getText().toString();
+        String title = etNewItem.getText().toString();
+        Task t = dataSource.addTask(new Task(title, "", ""));
+        tasksAdapter.add(t);
+        tasksAdapter.notifyDataSetChanged();
 
+        /*
         // Add the new task and set the edit text to blank
         itemsAdapter.add(itemText);
         etNewItem.setText("");
 
         writeItems();
-
+        */
 
         //Intent i = new Intent(MainActivity.this, AddItemActivity.class);
         //startActivityForResult(i, ADD_CODE);
