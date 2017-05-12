@@ -58,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
         lvItems = (ListView)findViewById(R.id.lvItems);
         lvItems.setAdapter(tasksAdapter);
 
+        setupListViewListener();
+
         //dbHelper = TasksDatabaseHelper.getInstance(this);
 
     }
@@ -94,15 +96,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapter, View item, int pos, long id) {
 
+                dataSource.deleteTask(tasks.get(pos));
+
                 // Removes the item
-                items.remove(pos);
-                //tasks.remove(pos);
+                //items.remove(pos);
+                tasks.remove(pos);
 
                 // Refreshes the adapter
-                itemsAdapter.notifyDataSetChanged();
-                //tasksAdapter.notifyDataSetChanged();
+                //itemsAdapter.notifyDataSetChanged();
+                tasksAdapter.notifyDataSetChanged();
 
-                writeItems();
+                //writeItems();
 
                 return true;
             }

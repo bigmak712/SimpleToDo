@@ -62,10 +62,6 @@ public class TaskDataSource {
         Cursor cursor = database.query(TasksDatabaseHelper.DATABASE_TABLE, allColumns,
                 null, null, null, null, null);
 
-        int iTitle = cursor.getColumnIndex(TasksDatabaseHelper.KEY_TASK_TITLE);
-        int iNotes = cursor.getColumnIndex(TasksDatabaseHelper.KEY_TASK_NOTES);
-        int iDate = cursor.getColumnIndex(TasksDatabaseHelper.KEY_TASK_DUE_DATE);
-
         for(cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
             Task t = cursorToTask(cursor);
             tasks.add(t);
