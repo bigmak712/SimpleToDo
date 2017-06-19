@@ -4,7 +4,7 @@
 
 Submitted by: **Timothy Mak**
 
-Time spent: **12** hours spent in total
+Time spent: **25** hours spent in total
 
 ## User Stories
 
@@ -42,6 +42,11 @@ Describe any challenges encountered while building the app.
   I think just learning about Android Studio and how to create an Android app was a challenge in itself since this
   is the first time I've worked with Android. Since the only app building experience I have is with iOS, getting
   used to the Android Studio was hard since I'm so used to coding in XCode.
+  
+  Trying to implement the additional features was also challenging since I focused mainly on trying to create a 
+  custom adapter and save data onto a database. Most of my time went into just researching and trying to see and
+  understand how it worked. Unfortunately, I didn't have enough time to work out the bugs so I was unable to 
+  implement those features.
 
 ## License
 
