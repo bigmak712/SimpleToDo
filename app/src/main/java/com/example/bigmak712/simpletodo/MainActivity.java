@@ -25,20 +25,13 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<String> items;
     ArrayAdapter<String> itemsAdapter;
 
-    ArrayList<Task> tasks;
-    CustomTaskAdapter tasksAdapter;
-
     ListView lvItems;
-    //TasksDatabaseHelper dbHelper;
-
-    private TaskDataSource dataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        /*
         // Retrieve the items that are saved
         readItems();
 
@@ -47,8 +40,8 @@ public class MainActivity extends AppCompatActivity {
         itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
         lvItems.setAdapter(itemsAdapter);
         setupListViewListener();
-        */
 
+        /* Attempt at using database
         dataSource = new TaskDataSource(this);
         dataSource.open();
 
@@ -60,7 +53,8 @@ public class MainActivity extends AppCompatActivity {
 
         setupListViewListener();
 
-        //dbHelper = TasksDatabaseHelper.getInstance(this);
+        dbHelper = TasksDatabaseHelper.getInstance(this);
+        */
 
     }
 
@@ -70,16 +64,18 @@ public class MainActivity extends AppCompatActivity {
         // Get the text from the edit text
         EditText etNewItem = (EditText)findViewById(R.id.etNewItem);
         String title = etNewItem.getText().toString();
-        Task t = dataSource.addTask(new Task(title, "", ""));
-        tasksAdapter.add(t);
-        tasksAdapter.notifyDataSetChanged();
 
-        /*
         // Add the new task and set the edit text to blank
-        itemsAdapter.add(itemText);
+        itemsAdapter.add(title);
         etNewItem.setText("");
 
         writeItems();
+
+
+        /*
+        Task t = dataSource.addTask(new Task(title, "", ""));
+        tasksAdapter.add(t);
+        tasksAdapter.notifyDataSetChanged();
         */
 
         //Intent i = new Intent(MainActivity.this, AddItemActivity.class);
@@ -96,17 +92,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapter, View item, int pos, long id) {
 
-                dataSource.deleteTask(tasks.get(pos));
+                //dataSource.deleteTask(tasks.get(pos));
 
                 // Removes the item
-                //items.remove(pos);
-                tasks.remove(pos);
+                items.remove(pos);
+                //tasks.remove(pos);
 
                 // Refreshes the adapter
-                //itemsAdapter.notifyDataSetChanged();
-                tasksAdapter.notifyDataSetChanged();
+                itemsAdapter.notifyDataSetChanged();
+                //tasksAdapter.notifyDataSetChanged();
 
-                //writeItems();
+                writeItems();
 
                 return true;
             }
@@ -136,10 +132,10 @@ public class MainActivity extends AppCompatActivity {
                 String date = reader.next();
                 tasks.add(new Task(title, notes, date));
             }
+            tasks = new ArrayList<Task>(FileUtils.readLines(todoFile));
             */
 
             items = new ArrayList<String>(FileUtils.readLines(todoFile));
-            //tasks = new ArrayList<Task>(FileUtils.readLines(todoFile));
         } catch (IOException e){
             items = new ArrayList<String>();
             //tasks = new ArrayList<Task>();
@@ -174,7 +170,6 @@ public class MainActivity extends AppCompatActivity {
 
             String etTask = i.getExtras().getString("edit");
             int pos = i.getIntExtra("position", 0);
-
 
             items.remove(pos);
             items.add(pos, etTask);
